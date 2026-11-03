@@ -361,12 +361,13 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
         </button>
         <p id="writing-result" role="status" aria-live="polite"></p>
         <div class="callout tip">
-          <div class="ct">Cách chấm bài</div>
+          <div class="ct">Cách tự chấm</div>
           <p>
-            Website kiểm tra cấu trúc cơ bản
-            <code>chủ ngữ + am/is/are + động từ -ing</code>; chồng vẫn sẽ xem
-            cách dùng từ và ngữ cảnh. Mục tiêu quiz là ít nhất
-            <strong>4/5</strong>. Nếu chưa đạt, vợ có thể làm lại quiz.
+            Khi vợ nộp, website tự tính điểm quiz và kiểm tra ba câu theo mẫu
+            <code>chủ ngữ + am/is/are + động từ -ing</code>. Đạt quiz ít nhất
+            <strong>4/5</strong> và đúng cả ba mẫu câu thì tiến độ tự tăng. Nếu
+            chưa đạt, website chỉ ra phần cần làm lại. Chồng vẫn có thể giải
+            thích thêm về cách dùng từ và ý nghĩa.
           </p>
         </div>
         <button
@@ -383,7 +384,7 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
             cursor: pointer;
           "
         >
-          Lưu bài làm và tạo nội dung gửi chồng</button
+          Nộp bài · tự chấm và lưu</button
         ><button
           id="retry-quiz"
           type="button"
@@ -414,7 +415,7 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
           id="share-output"
           rows="8"
           readonly
-          placeholder="Sau khi lưu bài, nội dung gửi chồng sẽ hiện ở đây."
+          placeholder="Sau khi nộp bài, website sẽ tạo phần tóm tắt để gửi chồng."
           style="
             display: block;
             width: 100%;
@@ -446,10 +447,10 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
         </button>
       </form>
       <div class="callout warn">
-        <div class="ct">📌 Trạng thái bài học</div>
+        <div class="ct">📌 Tiến độ tự cập nhật</div>
         <p>
-          Bài chỉ được lưu trên máy của vợ. Sau khi lưu, gửi cho
-          chồng. Chồng chữa bài xong thì vợ mới được học bài tiếp nha ❤️
+          Bài chỉ được lưu trên máy của vợ. Sau khi lưu, gửi cho chồng. Chồng
+          chữa bài xong thì vợ mới được học bài tiếp nha ❤️
         </p>
       </div>
       <h2>6. Tự kiểm tra mục tiêu</h2>
@@ -472,8 +473,8 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
         <div class="nl">→ Bài tiếp theo · dự kiến</div>
         <div class="nt">Bài 02 · Present Simple</div>
         <p class="nd">
-          Chúng mình sẽ học cách nói về thói quen và sự thật, rồi so sánh với
-          hành động đang diễn ra. Bài tiếp theo sẽ mở sau khi chồng xem bài này.
+          Chúng mình sẽ học cách nói về thói quen và sự thật, rồi so sánh với hành động
+          đang diễn ra. Bài tiếp theo sẽ mở sau khi chồng xem bài này.
         </p>
       </div>
       <div class="navbar">
@@ -484,6 +485,7 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
         💬 <strong>Chồng luôn sẵn sàng giải thích lại.</strong> Nếu vợ thấy khó,
         cứ hỏi điều nào chưa rõ khi gửi bài.
       </p>
+      <h1><strong>Mình yêu vợ thúi nhất trên đời ❤️</strong></h1>
     </div>
     <script src="lesson-enhance.js"></script>
     <script>
@@ -531,7 +533,7 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
                 "Dùng “I am” rồi thêm động từ dạng -ing.",
               ];
             return patterns[i].test(s)
-              ? "✓ Câu " + (i + 1) + ": Đúng mẫu cơ bản."
+              ? "✓ Câu " + (i + 1) + ": đúng mẫu cơ bản."
               : "↻ Câu " + (i + 1) + ": kiểm tra lại. " + hints[i];
           });
         const makeShare = (r) => {
@@ -572,7 +574,7 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
             score +
             "/5. " +
             (score >= 4
-              ? "Vợ giỏi quá hihi vợ đúng hết goi nè 😘."
+              ? "Vợ giỏi quá hihi vợ đúng hết goi nè 😘.."
               : "Vợ xem lại phần phản hồi từng câu rồi thử lại nhé.");
         });
         document
@@ -602,48 +604,67 @@ Dong <span class="kw">is</span> <span class="fn">working</span> now.</code></pre
             document.getElementById("sentence" + n).value.trim(),
           );
           if (sentences.some((s) => !s)) {
-            feedback.textContent = "Vợ hãy điền đủ ba câu rồi lưu nhé.";
+            feedback.textContent = "Vợ hãy điền đủ ba câu rồi nộp nhé.";
             feedback.className = "feedback show bad";
             return;
           }
           const picked = [...document.querySelectorAll(".quiz .opt.picked")];
-          if (picked.length < 5 || !state.lesson01?.quizChecked) {
+          if (picked.length < 5) {
             feedback.textContent =
-              "Vợ hãy chọn đủ 5 đáp án và bấm “Chấm điểm 5 câu” trước nhé.";
-            feedback.className = "feedback show bad";
-            return;
-          }
-          if (!state.lesson01?.writingChecked) {
-            feedback.textContent =
-              "Vợ hãy bấm “Kiểm tra cấu trúc 3 câu” trước nhé.";
+              "Vợ hãy chọn đáp án cho đủ 5 câu quiz rồi nộp nhé.";
             feedback.className = "feedback show bad";
             return;
           }
           const score = picked.filter(
               (b) => b.dataset.correct === "true",
             ).length,
-            writingFeedback = sentenceChecks(sentences);
+            writingFeedback = sentenceChecks(sentences),
+            writingPass = writingFeedback.every((item) => item.startsWith("✓")),
+            criteriaPass = score >= 4 && writingPass,
+            wasComplete =
+              state.completedLessonIds?.includes(
+                "lesson01-present-continuous",
+              ) ||
+              state.lesson01?.reviewedComplete ||
+              state.lesson01?.completed;
           state.lesson01 = {
             ...state.lesson01,
             submitted: true,
-            reviewedComplete: false,
+            completed: Boolean(wasComplete || criteriaPass),
             score,
             total: 5,
             sentences,
             writingFeedback,
             submittedAt: new Date().toISOString(),
           };
+          if (criteriaPass) {
+            state.completedLessonIds = state.completedLessonIds || [];
+            if (
+              !state.completedLessonIds.includes("lesson01-present-continuous")
+            )
+              state.completedLessonIds.push("lesson01-present-continuous");
+          }
           localStorage.setItem(KEY, JSON.stringify(state));
+          document.getElementById("quiz-result").textContent =
+            "Kết quả: " + score + "/5.";
+          document.getElementById("writing-result").textContent =
+            writingFeedback.join("   ");
           makeShare(state.lesson01);
-          feedback.textContent =
-            "Đã lưu trên thiết bị: quiz " +
-            score +
-            "/5. Sao chép nội dung bên dưới và dán vào cuộc trò chuyện để chồng xem. Bài vẫn đang chờ chồng chấm.";
-          feedback.className = "feedback show " + (score >= 4 ? "good" : "bad");
+          if (state.lesson01.completed) {
+            feedback.textContent =
+              "Vợ đạt mục tiêu bài học: quiz ít nhất 4/5 và cả ba câu đúng mẫu. Tiến độ đã tự cập nhật trên trình duyệt này.";
+            feedback.className = "feedback show good";
+          } else {
+            feedback.textContent =
+              "Bài đã được tự chấm nhưng chưa đạt đủ tiêu chí để tăng tiến độ. Vợ xem phản hồi từng câu, sửa phần được gợi ý rồi làm lại nhé.";
+            feedback.className = "feedback show bad";
+          }
         });
         document.getElementById("retry-quiz").addEventListener("click", () => {
           const a = state.lesson01 || {};
           delete a.answers;
+          delete a.score;
+          a.quizChecked = false;
           a.submitted = false;
           state.lesson01 = a;
           localStorage.setItem(KEY, JSON.stringify(state));
