@@ -501,7 +501,7 @@ I <span class="fn">work</span> during the day.</code></pre>
         <nav class="navbar" aria-label="Điều hướng bài học">
           <a href="0001-present-continuous.html">← Bài 01</a>
           <a href="index.html">🏠 Mục lục</a>
-          <span class="disabled">Sau →</span>
+          <span class="disabled" id="next-lesson-link">Sau →</span>
         </nav>
         <p class="try-it">
           💬 Nếu một câu hỏi còn khó, vợ có thể hỏi chồng khi gửi bài nhé.
@@ -516,6 +516,7 @@ I <span class="fn">work</span> during the day.</code></pre>
         const PROGRESS_KEY = "ielts-foundation-progress-v1";
         const PREVIOUS_LESSON_ID = "lesson01-present-continuous";
         const CURRENT_LESSON_ID = "lesson02-present-simple";
+        const NEXT_LESSON_URL = "0003-present-simple-continuous.html";
         const PASSING_SCORE = 4;
         const WORDS = {
           base: [
@@ -666,7 +667,7 @@ I <span class="fn">work</span> during the day.</code></pre>
             score +
             "/5. " +
             (score >= PASSING_SCORE
-              ? "Vợ giỏi quớ đii hihihi 😘."
+              ? "Vợ đạt mục tiêu mini-quiz."
               : "Vợ xem phản hồi từng câu rồi thử lại nhé.");
           return score;
         }
@@ -770,6 +771,14 @@ I <span class="fn">work</span> during the day.</code></pre>
           const progress = loadProgress();
           if (!unlockLessonIfReady(progress)) return;
 
+          if ((progress.completedLessonIds || []).includes(CURRENT_LESSON_ID)) {
+            const nextLink = document.getElementById("next-lesson-link");
+            const link = document.createElement("a");
+            link.href = NEXT_LESSON_URL;
+            link.textContent = "Sau →";
+            nextLink.replaceWith(link);
+          }
+
           const questions = getQuizQuestions();
           const savedLesson = progress.lesson02 || {};
           const sentenceFields = [1, 2, 3].map((number) =>
@@ -844,6 +853,15 @@ I <span class="fn">work</span> during the day.</code></pre>
                 submittedAt: new Date().toISOString(),
               };
               saveProgress(latestProgress);
+              if (passed) {
+                const nextLink = document.getElementById("next-lesson-link");
+                if (nextLink) {
+                  const link = document.createElement("a");
+                  link.href = NEXT_LESSON_URL;
+                  link.textContent = "Sau →";
+                  nextLink.replaceWith(link);
+                }
+              }
               showQuizFeedback(questions);
               document.getElementById("share-output").value =
                 makeSubmissionSummary(score, sentenceFeedback, sentences);

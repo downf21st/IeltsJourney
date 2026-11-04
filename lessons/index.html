@@ -85,6 +85,9 @@
         background: var(--bg-soft);
         font-size: 15px;
       }
+      .lessons-list [hidden] {
+        display: none !important;
+      }
       .lessons-list a {
         color: var(--text);
       }
@@ -151,18 +154,19 @@
         >
         <h1>Nền vững, nói tự tin hơn</h1>
         <p class="subtitle">
-          Học từ nền tảng đến IELTS, theo nhịp độ và bài làm thật của vợ.
+          Học từ nền tảng đến IELTS, theo nhịp độ và bài làm thật của em.
         </p>
       </div>
       <div class="intro-card">
         <strong>Điểm xuất phát của Nga:</strong> Placement Test
         <strong>15/17</strong>; Reading 4/4, Vocabulary 5/5, Grammar 6/8; tự tin
-        khi nói <strong>2/5</strong>. Listening chưa được đánh giá. Lesson 01 đã
-        được dạy nhưng chưa gửi mini-quiz và ba câu thực hành.
-        <span class="status-pill" id="lesson-status">Bài 01 đang học</span>
+        khi nói <strong>2/5</strong>. Listening chưa được đánh giá.
+        <span class="status-pill" id="lesson-status"
+          >Tiến độ trên trình duyệt này</span
+        >
         <p class="tiny">
-          Sau khi vợ nộp bài, website tự chấm và tăng tiến độ nếu đạt tiêu chí.
-          Dữ liệu được lưu riêng trong trình duyệt này.
+          Bài tiếp theo chỉ mở khi bài trước được tự chấm đạt. Tiến độ được lưu
+          riêng trong trình duyệt này.
         </p>
       </div>
       <div class="progress-wrap">
@@ -182,19 +186,28 @@
         </p>
         <ul class="lessons-list">
           <li>
-            <a href="0001-present-continuous.html"
-              ><span class="badge now">Bài 01</span> Present Continuous · vợ
-              đang học
+            <a id="lesson01-link" href="0001-present-continuous.html"
+              ><span class="badge now">Bài 01</span> Present Continuous
               <span class="lcount" id="attempt-status">Tiếp tục →</span></a
             >
           </li>
           <li>
-            <span class="soon" data-href="0002-present-simple.html" data-requires="lesson01-present-continuous"><span class="badge soon">Bài 02</span> Present Simple · thói quen và sự thật <span class="lcount">sắp tới</span></span>
+            <span
+              class="soon"
+              data-href="0002-present-simple.html"
+              data-requires="lesson01-present-continuous"
+              ><span class="badge soon">Bài 02</span> Present Simple · thói quen
+              và sự thật <span class="lcount">sắp tới</span></span
+            >
           </li>
           <li>
-            <span class="soon"
+            <span
+              class="soon"
+              data-href="0003-present-simple-continuous.html"
+              data-requires="lesson02-present-simple"
               ><span class="badge soon">Bài 03</span> Phân biệt Present Simple
-              và Present Continuous <span class="lcount">sắp tới</span></span
+              và Present Continuous
+              <span class="lcount">🔒 hoàn thành Bài 02 để mở</span></span
             >
           </li>
           <li>
@@ -321,6 +334,7 @@
         const TOTAL_LESSON_ESTIMATE = 100;
         const LESSON_01_ID = "lesson01-present-continuous";
         const LESSON_02_ID = "lesson02-present-simple";
+        const LESSON_03_ID = "lesson03-present-simple-continuous";
 
         function readProgress() {
           try {
@@ -330,63 +344,84 @@
           }
         }
 
-        function unlockNextLessons(completedIds) {
-          document.querySelectorAll(".lessons-list .soon[data-href][data-requires]").forEach((lockedItem) => {
-            if (!completedIds.includes(lockedItem.dataset.requires)) return;
+        function unlockNextLessons(completedLessonIds) {
+          document
+            .querySelectorAll(".lessons-list .soon[data-href][data-requires]")
+            .forEach((lockedItem) => {
+              if (!completedLessonIds.includes(lockedItem.dataset.requires))
+                return;
 
-            const link = document.createElement("a");
-            link.href = lockedItem.dataset.href;
-            link.setAttribute("aria-label", "Mở " + lockedItem.querySelector(".badge").textContent);
+              const link = document.createElement("a");
+              link.href = lockedItem.dataset.href;
+              link.setAttribute(
+                "aria-label",
+                "Mở " + lockedItem.querySelector(".badge").textContent,
+              );
 
-            const badge = lockedItem.querySelector(".badge");
-            badge.classList.replace("soon", "now");
+              const badge = lockedItem.querySelector(".badge");
+              badge.classList.remove("soon");
+              badge.classList.add("now");
 
-            const label = lockedItem.querySelector(".lcount");
-            if (label) label.textContent = "Tiếp tục →";
+              const label = lockedItem.querySelector(".lcount");
+              if (label) label.textContent = "Tiếp tục →";
 
-            while (lockedItem.firstChild) link.appendChild(lockedItem.firstChild);
-            lockedItem.replaceWith(link);
-          });
+              while (lockedItem.firstChild)
+                link.appendChild(lockedItem.firstChild);
+              lockedItem.replaceWith(link);
+            });
         }
 
-        function updateProgress(progress, completedIds) {
-          const count = completedIds.length;
-          const percentage = Math.min(100, Math.round((count / TOTAL_LESSON_ESTIMATE) * 100));
+        function renderProgress(progress, completedLessonIds) {
+          const count = completedLessonIds.length;
+          const percentage = Math.min(
+            100,
+            Math.round((count / TOTAL_LESSON_ESTIMATE) * 100),
+          );
           const previousLesson = progress.lesson01 || {};
           const status = document.getElementById("lesson-status");
+          const lessonOneLabel = document.getElementById("attempt-status");
 
           document.getElementById("progress").style.width = percentage + "%";
           document.getElementById("progress-label").textContent =
-            count + " / ~" + TOTAL_LESSON_ESTIMATE + " bài hoàn thành · tổng số bài là ước tính";
+            count +
+            " / ~" +
+            TOTAL_LESSON_ESTIMATE +
+            " bài hoàn thành · tổng số bài là ước tính";
 
-          if (completedIds.includes(LESSON_01_ID)) {
-            document.getElementById("attempt-status").textContent = "Vợ đã tự chấm đạt ✓";
-            status.textContent = completedIds.includes(LESSON_02_ID)
-              ? "Bài 02 hoàn thành · chờ bài sau"
-              : "Bài 01 hoàn thành · vợ học tiếp nhé";
+          if (completedLessonIds.includes(LESSON_01_ID)) {
+            lessonOneLabel.textContent = "Đã tự chấm đạt ✓";
+            status.textContent = completedLessonIds.includes(LESSON_03_ID)
+              ? "Bài 03 hoàn thành"
+              : completedLessonIds.includes(LESSON_02_ID)
+                ? "Bài 02 hoàn thành · Bài 03 đã mở"
+                : "Bài 01 hoàn thành";
             status.style.background = "rgba(74,222,128,.15)";
             status.style.color = "var(--green)";
           } else if (previousLesson.submitted) {
-            document.getElementById("attempt-status").textContent = "Đã tự chấm · cần làm lại";
+            lessonOneLabel.textContent = "Đã tự chấm · cần làm lại";
             status.textContent = "Bài 01 cần luyện tiếp";
-            document.getElementById("progress-label").textContent =
-              count + " / ~" + TOTAL_LESSON_ESTIMATE + " bài hoàn thành · Bài 01 chưa đạt tiêu chí";
           }
         }
 
         const progress = readProgress();
-        const completedIds = [...new Set(progress.completedLessonIds || [])];
+        const completedLessonIds = [
+          ...new Set(progress.completedLessonIds || []),
+        ];
         const previousLesson = progress.lesson01 || {};
 
-        // Bổ sung ID bài cũ nếu local storage đã lưu cờ completed trước đây.
-        if ((previousLesson.completed || previousLesson.reviewedComplete) && !completedIds.includes(LESSON_01_ID)) {
-          completedIds.push(LESSON_01_ID);
+        // Bổ sung ID cũ nếu bài trước đã được lưu hoàn thành theo cấu trúc tiến độ cũ.
+        if (
+          (previousLesson.completed || previousLesson.reviewedComplete) &&
+          !completedLessonIds.includes(LESSON_01_ID)
+        ) {
+          completedLessonIds.push(LESSON_01_ID);
         }
 
-        progress.completedLessonIds = completedIds;
+        progress.completedLessonIds = completedLessonIds;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-        unlockNextLessons(completedIds);
-        updateProgress(progress, completedIds);
+
+        unlockNextLessons(completedLessonIds);
+        renderProgress(progress, completedLessonIds);
       })();
     </script>
   </body>
