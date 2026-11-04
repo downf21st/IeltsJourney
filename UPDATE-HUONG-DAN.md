@@ -17,7 +17,7 @@ Mỗi bài mới cần đủ bốn phần:
 1. Tệp bài học mới, ví dụ `lessons/0003-present-simple-continuous.html`.
 2. Một dòng bài đang khóa trong `lessons/index.html`.
 3. ID của bài trước để website biết khi nào mở bài mới.
-4. Kiểm tra tiến độ ngay trong tệp bài mới, để người học không thể mở nội dung bằng cách gõ thẳng URL.
+4. iểm tra tiến độ ngay trong tệp bài mới, để người học không thể mở nội dung bằng cách gõ thẳng URL.
 
 Mục lục đã có sẵn hàm mở bài chung. Khi thêm Bài 04, Bài 05…, không cần viết lại hàm đó; chỉ thêm đúng thông tin vào dòng bài đang khóa.
 
@@ -43,7 +43,7 @@ Hai thuộc tính cần điền chính xác:
 - `data-href`: tên đường dẫn của tệp bài học mới. Tệp phải tồn tại trước khi thêm đường dẫn.
 - `data-requires`: ID bài ngay trước đó, ví dụ `lesson02-present-simple`.
 
-Khi ID tiên quyết xuất hiện trong `completedLessonIds` ở trình duyệt, hàm chung sẽ đổi `span.soon` thành liên kết `<a>), đổi badge từ `soon` sang `now`, rồi hiện “Tiếp tục →”. Không thêm sẵn một liên kết ẩn bên cạnh `span`; hai phần tử đó dễ cùng hiện do CSS.
+Khi ID tiên quyết xuất hiện trong `completedLessonIds` ở trình duyệt, hàm chung sẽ đổi `span.soon` thành liên kết `<a>), đổi badge từ `soon`sang`now`, rồi hiện “Tiếp tục →”. Không thêm sẵn một liên kết ẩn bên cạnh `span\`; hai phần tử đó dễ cùng hiện do CSS.
 
 ## 4. Tạo tệp bài học mới
 
@@ -117,7 +117,7 @@ Trang bài mới vẫn phải có bước kiểm tra ID tiên quyết ở mục 
 Ví dụ khi thêm Bài 03:
 
 | Thao tác | Tệp | Lý do |
-|---|---|---|
+| --- | --- | --- |
 | THÊM | `lessons/0003-present-simple-continuous.html` | Nội dung bài mới, bài tập và tự chấm. |
 | CẬP NHẬT | `lessons/index.html` | Thêm dòng khóa có `data-href` và `data-requires`. |
 | CẬP NHẬT | `lessons/0002-present-simple.html` | Nối nút “Sau” tới Bài 03. |

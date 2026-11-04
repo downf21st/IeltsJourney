@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -267,6 +267,26 @@ I <span class="fn">work</span> during the day.</code></pre>
             <div class="feedback"></div>
           </div>
           <button
+            id="check-quiz"
+            type="button"
+            style="
+              margin-top: 12px;
+              padding: 10px 14px;
+              border: 1px solid #38bdf8;
+              border-radius: 10px;
+              background: rgba(56, 189, 248, 0.14);
+              color: #e6e9f0;
+              font:
+                500 14px Inter,
+                sans-serif;
+              cursor: pointer;
+            "
+          >
+            Chấm điểm 5 câu
+          </button>
+          <p id="quiz-result" role="status" aria-live="polite"></p>
+
+          <button
             id="retry-quiz"
             type="button"
             style="
@@ -363,6 +383,25 @@ I <span class="fn">work</span> during the day.</code></pre>
                 font: inherit;
               "
             ></textarea>
+
+            <button
+              id="check-writing"
+              type="button"
+              style="
+                padding: 10px 14px;
+                border: 1px solid #a78bfa;
+                border-radius: 10px;
+                background: rgba(167, 139, 250, 0.13);
+                color: #e6e9f0;
+                font:
+                  500 14px Inter,
+                  sans-serif;
+                cursor: pointer;
+              "
+            >
+              Kiểm tra cấu trúc 3 câu
+            </button>
+            <p id="writing-result" role="status" aria-live="polite"></p>
             <button
               type="submit"
               style="
@@ -573,7 +612,10 @@ I <span class="fn">work</span> during the day.</code></pre>
           questions.forEach((question, questionIndex) => {
             const savedOptionIndex = savedAnswers?.[questionIndex];
             const savedOption = question.options[savedOptionIndex];
-            if (savedOption) savedOption.click();
+            if (savedOption) {
+              savedOption.classList.add("picked");
+              savedOption.click();
+            }
           });
         }
 
@@ -603,6 +645,51 @@ I <span class="fn">work</span> during the day.</code></pre>
           }, 0);
         }
 
+        function checkQuiz(questions) {
+          const score = scoreQuiz(questions);
+          const output = document.getElementById("quiz-result");
+          if (score === null) {
+            output.textContent =
+              "Vợ hãy chọn một đáp án cho đủ 5 câu trước nhé.";
+            return null;
+          }
+          const progress = loadProgress();
+          progress.lesson02 = {
+            ...progress.lesson02,
+            score,
+            total: questions.length,
+            quizChecked: true,
+          };
+          saveProgress(progress);
+          output.textContent =
+            "Kết quả: " +
+            score +
+            "/5. " +
+            (score >= PASSING_SCORE
+              ? "Vợ giỏi quớ đii hihihi 😘."
+              : "Vợ xem phản hồi từng câu rồi thử lại nhé.");
+          return score;
+        }
+
+        function checkWriting(sentenceFields) {
+          const sentences = sentenceFields.map((field) => field.value.trim());
+          const output = document.getElementById("writing-result");
+          if (sentences.some((sentence) => !sentence)) {
+            output.textContent = "Vợ hãy viết đủ ba câu rồi kiểm tra nhé.";
+            return null;
+          }
+          const feedback = sentences.map(checkSentence);
+          const progress = loadProgress();
+          progress.lesson02 = {
+            ...progress.lesson02,
+            sentences,
+            sentenceFeedback: feedback,
+            writingChecked: true,
+          };
+          saveProgress(progress);
+          output.textContent = feedback.join("   ");
+          return feedback;
+        }
         function checkSentence(sentence, sentenceIndex) {
           const cleaned = sentence.trim().replace(/[.!?]+$/, "");
           const baseVerb = new RegExp(
@@ -696,12 +783,19 @@ I <span class="fn">work</span> during the day.</code></pre>
 
           questions.forEach((question, questionIndex) => {
             question.options.forEach((option, optionIndex) => {
-              option.addEventListener("click", () =>
-                saveAnswer(loadProgress(), questionIndex, optionIndex),
-              );
+              option.addEventListener("click", () => {
+                option.classList.add("picked");
+                saveAnswer(loadProgress(), questionIndex, optionIndex);
+              });
             });
           });
 
+          document
+            .getElementById("check-quiz")
+            .addEventListener("click", () => checkQuiz(questions));
+          document
+            .getElementById("check-writing")
+            .addEventListener("click", () => checkWriting(sentenceFields));
           document
             .getElementById("lesson-form")
             .addEventListener("submit", (event) => {
@@ -721,6 +815,10 @@ I <span class="fn">work</span> during the day.</code></pre>
               }
 
               const sentenceFeedback = sentences.map(checkSentence);
+              document.getElementById("quiz-result").textContent =
+                "Kết quả: " + score + "/5.";
+              document.getElementById("writing-result").textContent =
+                sentenceFeedback.join("   ");
               const writingPassed = sentenceFeedback.every((feedback) =>
                 feedback.startsWith("✓"),
               );
