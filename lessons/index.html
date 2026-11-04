@@ -1,435 +1,106 @@
-<!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>English Foundation · Lộ trình của Nga</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="lesson.css" />
-    <style>
-      .hero {
-        text-align: center;
-        margin-bottom: 14px;
-      }
-      .hero h1 {
-        font-size: 2.4rem;
-      }
-      .progress-wrap {
-        margin: 26px 0 40px;
-      }
-      .progress-bar {
-        height: 10px;
-        background: var(--bg-card);
-        border-radius: 999px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-      }
-      .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--accent), var(--accent-2));
-        border-radius: 999px;
-        transition: width 0.3s;
-      }
-      .progress-label {
-        text-align: center;
-        color: var(--text-dim);
-        font-size: 14px;
-        margin-top: 8px;
-      }
-      .module {
-        margin: 30px 0;
-      }
-      .module-head {
-        display: flex;
-        align-items: baseline;
-        gap: 12px;
-        margin-bottom: 4px;
-      }
-      .module-num {
-        font-family: var(--mono);
-        color: var(--accent);
-        font-weight: 600;
-        font-size: 14px;
-      }
-      .module-head h2 {
-        border: none;
-        margin: 14px 0 2px;
-        padding: 0;
-        font-size: 1.35rem;
-      }
-      .module-why {
-        color: var(--text-dim);
-        font-size: 14px;
-        margin: 0 0 12px;
-      }
-      .lessons-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .lessons-list li {
-        margin: 6px 0;
-      }
-      .lessons-list a,
-      .lessons-list span.soon {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: var(--bg-soft);
-        font-size: 15px;
-      }
-      .lessons-list [hidden] {
-        display: none !important;
-      }
-      .lessons-list a {
-        color: var(--text);
-      }
-      .lessons-list a:hover {
-        border-color: var(--accent);
-        background: var(--bg-card);
-      }
-      .lessons-list span.soon {
-        color: var(--text-dim);
-        border-style: dashed;
-      }
-      .badge {
-        font-family: var(--mono);
-        font-size: 12px;
-        padding: 2px 8px;
-        border-radius: 6px;
-        flex-shrink: 0;
-      }
-      .badge.done {
-        background: rgba(74, 222, 128, 0.15);
-        color: var(--green);
-      }
-      .badge.now {
-        background: rgba(56, 189, 248, 0.15);
-        color: var(--accent);
-      }
-      .badge.soon {
-        background: #232838;
-        color: var(--text-dim);
-      }
-      .lcount {
-        margin-left: auto;
-        font-size: 12px;
-        color: var(--text-dim);
-        font-family: var(--mono);
-      }
-      .intro-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--accent-2);
-        border-radius: var(--radius);
-        padding: 18px 20px;
-        margin-bottom: 10px;
-      }
-      .status-pill {
-        display: inline-flex;
-        padding: 3px 9px;
-        border-radius: 999px;
-        background: rgba(251, 191, 36, 0.12);
-        color: var(--amber);
-        font-size: 12px;
-      }
-      .tiny {
-        font-size: 13px;
-        color: var(--text-dim);
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      <div class="hero">
-        <span class="lesson-tag"
-          >🌱 English Foundation · Học cùng chồng yêu</span
-        >
-        <h1>Nền vững, nói tự tin hơn</h1>
-        <p class="subtitle">
-          Học từ nền tảng đến IELTS, theo nhịp độ và bài làm thật của vợ.
-        </p>
-      </div>
-      <div class="intro-card">
-        <strong>Điểm xuất phát của Nga:</strong> Placement Test
-        <strong>15/17</strong>; Reading 4/4, Vocabulary 5/5, Grammar 6/8; tự tin
-        khi nói <strong>2/5</strong>. Listening chưa được đánh giá.
-        <span class="status-pill" id="lesson-status"
-          >Tiến độ trên trình duyệt này</span
-        >
-        <p class="tiny">
-          Bài tiếp theo chỉ mở khi bài trước được tự chấm đạt. Tiến độ được lưu
-          riêng trong trình duyệt này.
-        </p>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress-bar">
-          <div class="progress-fill" id="progress" style="width: 0%"></div>
-        </div>
-        <div class="progress-label" id="progress-label">
-          0 / ~100 bài hoàn thành · Bài 01 đang học
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-head"><span class="module-num">CHẶNG 0</span></div>
-        <h2>Củng cố nền tiếng Anh · khoảng 5–7 bài</h2>
-        <p class="module-why">
-          Xây câu đúng và hiểu cấu trúc từ gốc, để xử lý lỗi thiếu am/is/are
-          trước khi mở rộng.
-        </p>
-        <ul class="lessons-list">
-          <li>
-            <a id="lesson01-link" href="0001-present-continuous.html"
-              ><span class="badge now">Bài 01</span> Present Continuous
-              <span class="lcount" id="attempt-status">Tiếp tục →</span></a
-            >
-          </li>
-          <li>
-            <span
-              class="soon"
-              data-href="0002-present-simple.html"
-              data-requires="lesson01-present-continuous"
-              ><span class="badge soon">Bài 02</span> Present Simple · thói quen
-              và sự thật <span class="lcount">sắp tới</span></span
-            >
-          </li>
-          <li>
-            <span
-              class="soon"
-              data-href="0003-present-simple-continuous.html"
-              data-requires="lesson02-present-simple"
-              ><span class="badge soon">Bài 03</span> Phân biệt Present Simple
-              và Present Continuous
-              <span class="lcount">🔒 hoàn thành Bài 02 để mở</span></span
-            >
-          </li>
-          <li>
-            <span
-              class="soon"
-              data-href="0004-noun-verb-adjective-adverb.html"
-              data-requires="lesson03-present-simple-continuous"
-              ><span class="badge soon">Bài 04</span> Từ loại: noun, verb,
-              adjective, adverb
-              <span class="lcount">🔒 hoàn thành Bài 03 để mở</span></span
-            >
-          </li>
-          <li>
-            <span class="soon"
-              ><span class="badge soon">Bài 05</span> Subject, verb, object và
-              complement <span class="lcount">sắp tới</span></span
-            >
-          </li>
-          <li>
-            <span class="soon"
-              ><span class="badge soon">Bài 06</span> Cấu trúc câu cơ bản trong
-              ngữ cảnh <span class="lcount">sắp tới</span></span
-            >
-          </li>
-          <li>
-            <span class="soon"
-              ><span class="badge soon">Bài 07</span> Âm và cách tra từ điển
-              <span class="lcount">sắp tới</span></span
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="module">
-        <div class="module-head"><span class="module-num">CHẶNG 1</span></div>
-        <h2>Ngữ pháp nền tảng · khoảng 25–35 bài</h2>
-        <p class="module-why">
-          21 chủ điểm đã thống nhất, chia nhỏ theo tình huống và mức độ cần
-          luyện.
-        </p>
-        <ul class="lessons-list">
-          <li>
-            <span class="soon"
-              ><span class="badge soon">1–10</span> Tag Questions · Articles ·
-              Tenses · Active/Passive · Prepositions · Phrasal Verbs · Word
-              Formation · Conjunctions · Quantifiers · Time Clauses
-              <span class="lcount">sắp tới</span></span
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="module">
-        <div class="module-head"><span class="module-num">CHẶNG 2</span></div>
-        <h2>Ngữ pháp nâng cao và diễn đạt · khoảng 20–30 bài</h2>
-        <p class="module-why">
-          Mở rộng câu và diễn đạt chính xác khi nền tảng đã ổn.
-        </p>
-        <ul class="lessons-list">
-          <li>
-            <span class="soon"
-              ><span class="badge soon">11–18</span> Participles ·
-              Gerunds/Infinitives · Relative Clauses · Comparatives · Fixed
-              Phrases · Reported Speech · Modals · Inversion
-              <span class="lcount">sắp tới</span></span
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="module">
-        <div class="module-head"><span class="module-num">CHẶNG 3</span></div>
-        <h2>Từ vựng và giao tiếp · khoảng 10–15 bài</h2>
-        <p class="module-why">
-          Chuyển từ nhận biết nghĩa sang dùng từ và cụm từ tự nhiên trong tình
-          huống thật.
-        </p>
-        <ul class="lessons-list">
-          <li>
-            <span class="soon"
-              ><span class="badge soon">19–21</span> Semantic Fields ·
-              Synonyms/Antonyms · Communication Situations
-              <span class="lcount">sắp tới</span></span
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="module">
-        <div class="module-head"><span class="module-num">CHẶNG 4</span></div>
-        <h2>Tích hợp bốn kỹ năng · khoảng 20–30 buổi</h2>
-        <p class="module-why">
-          Luyện đọc, nghe, nói, viết song song để kiến thức đi vào sử dụng.
-        </p>
-        <ul class="lessons-list">
-          <li>
-            <span class="soon"
-              ><span class="badge soon">4 kỹ năng</span> Reading · Listening ·
-              Speaking · Writing · ôn tập kết hợp
-              <span class="lcount">sắp tới</span></span
-            >
-          </li>
-        </ul>
-      </div>
-      <div class="module">
-        <div class="module-head"><span class="module-num">CHẶNG 5</span></div>
-        <h2>Chuyển tiếp sang IELTS</h2>
-        <p class="module-why">
-          Đánh giá lại trình độ, chốt mục tiêu band và xây kế hoạch theo từng kỹ
-          năng khi nền tảng đã đủ vững.
-        </p>
-        <ul class="lessons-list">
-          <li>
-            <span class="soon"
-              ><span class="badge soon">IELTS</span> Đánh giá đầu vào và lộ
-              trình cá nhân <span class="lcount">sau này</span></span
-            >
-          </li>
-        </ul>
-      </div>
-      <p class="try-it" style="text-align: center; margin-top: 40px">
-        Lộ trình co giãn: nếu một phần còn khó, sẽ có bài luyện thêm. Có thể đổi
-        mục tiêu hoặc thứ tự bất cứ lúc nào.<br /><span class="tiny"
-          >Danh sách 21 chủ điểm hiện dựa trên nội dung còn truy cập được trong
-          hội thoại; phụ lục gốc chưa có trong tệp dự án.</span
-        >
-      </p>
-    </div>
-    <script>
-      (() => {
-        const STORAGE_KEY = "ielts-foundation-progress-v1";
-        const TOTAL_LESSON_ESTIMATE = 100;
-        const LESSON_01_ID = "lesson01-present-continuous";
-        const LESSON_02_ID = "lesson02-present-simple";
-        const LESSON_03_ID = "lesson03-present-simple-continuous";
-        const LESSON_04_ID = "lesson04-noun-verb-adjective-adverb";
+<!DOCTYPE html>
+<html lang="vi"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Foundation · Lộ trình của Nga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="lesson.css">
+<style>
+.hero{text-align:center;margin-bottom:14px}.hero h1{font-size:2.4rem}.progress-wrap{margin:26px 0 40px}.progress-bar{height:10px;background:var(--bg-card);border-radius:999px;overflow:hidden;border:1px solid var(--border)}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px;transition:width .3s}.progress-label{text-align:center;color:var(--text-dim);font-size:14px;margin-top:8px}.module{margin:30px 0}.module-head{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}.module-num{font-family:var(--mono);color:var(--accent);font-weight:600;font-size:14px}.module-head h2{border:none;margin:14px 0 2px;padding:0;font-size:1.35rem}.module-why{color:var(--text-dim);font-size:14px;margin:0 0 12px}.lessons-list{list-style:none;padding:0;margin:0}.lessons-list li{margin:6px 0}.lessons-list a,.lessons-list span.soon{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg-soft);font-size:15px}.lessons-list [hidden]{display:none!important}.lessons-list a{color:var(--text)}.lessons-list a:hover{border-color:var(--accent);background:var(--bg-card)}.lessons-list span.soon{color:var(--text-dim);border-style:dashed}.badge{font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:6px;flex-shrink:0}.badge.done{background:rgba(74,222,128,.15);color:var(--green)}.badge.now{background:rgba(56,189,248,.15);color:var(--accent)}.badge.soon{background:#232838;color:var(--text-dim)}.lcount{margin-left:auto;font-size:12px;color:var(--text-dim);font-family:var(--mono)}.intro-card{background:var(--bg-card);border:1px solid var(--border);border-left:4px solid var(--accent-2);border-radius:var(--radius);padding:18px 20px;margin-bottom:10px}.status-pill{display:inline-flex;padding:3px 9px;border-radius:999px;background:rgba(251,191,36,.12);color:var(--amber);font-size:12px}.tiny{font-size:13px;color:var(--text-dim)}
+</style></head><body><div class="wrap">
+<div class="hero"><span class="lesson-tag">🌱 English Foundation · Học cùng thầy</span><h1>Nền vững, nói tự tin hơn</h1><p class="subtitle">Học từ nền tảng đến IELTS, theo nhịp độ và bài làm thật của em.</p></div>
+<div class="intro-card"><strong>Điểm xuất phát của Nga:</strong> Placement Test <strong>15/17</strong>; Reading 4/4, Vocabulary 5/5, Grammar 6/8; tự tin khi nói <strong>2/5</strong>. Listening chưa được đánh giá. <span class="status-pill" id="lesson-status">Tiến độ trên trình duyệt này</span><p class="tiny">Bài tiếp theo chỉ mở khi bài trước được tự chấm đạt. Tiến độ được lưu riêng trong trình duyệt này.</p></div>
+<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div><div class="progress-label" id="progress-label">0 / ~100 bài hoàn thành · Bài 01 đang học</div></div>
+<div class="module"><div class="module-head"><span class="module-num">CHẶNG 0</span></div><h2>Củng cố nền tiếng Anh · khoảng 5–7 bài</h2><p class="module-why">Xây câu đúng và hiểu cấu trúc từ gốc, để xử lý lỗi thiếu am/is/are trước khi mở rộng.</p><ul class="lessons-list">
+<li><a id="lesson01-link" href="0001-present-continuous.html"><span class="badge now">Bài 01</span> Present Continuous <span class="lcount" id="attempt-status">Tiếp tục →</span></a></li><li><span class="soon" data-href="0002-present-simple.html" data-requires="lesson01-present-continuous"><span class="badge soon">Bài 02</span> Present Simple · thói quen và sự thật <span class="lcount">sắp tới</span></span></li><li><span class="soon" data-href="0003-present-simple-continuous.html" data-requires="lesson02-present-simple"><span class="badge soon">Bài 03</span> Phân biệt Present Simple và Present Continuous <span class="lcount">🔒 hoàn thành Bài 02 để mở</span></span></li><li><span class="soon" data-href="0004-noun-verb-adjective-adverb.html" data-requires="lesson03-present-simple-continuous"><span class="badge soon">Bài 04</span> Từ loại: noun, verb, adjective, adverb <span class="lcount">🔒 hoàn thành Bài 03 để mở</span></span></li><li><span class="soon" data-href="0005-subject-verb-object-complement.html" data-requires="lesson04-noun-verb-adjective-adverb"><span class="badge soon">Bài 05</span> Subject, verb, object và complement <span class="lcount">🔒 hoàn thành Bài 04 để mở</span></span></li><li><span class="soon" data-href="0006-basic-sentence-in-context.html" data-requires="lesson05-subject-verb-object-complement"><span class="badge soon">Bài 06</span> Cấu trúc câu cơ bản trong ngữ cảnh <span class="lcount">🔒 hoàn thành Bài 05 để mở</span></span></li><li><span class="soon"><span class="badge soon">Bài 07</span> Âm và cách tra từ điển <span class="lcount">sắp tới</span></span></li></ul></div>
+<div class="module"><div class="module-head"><span class="module-num">CHẶNG 1</span></div><h2>Ngữ pháp nền tảng · khoảng 25–35 bài</h2><p class="module-why">21 chủ điểm đã thống nhất, chia nhỏ theo tình huống và mức độ cần luyện.</p><ul class="lessons-list"><li><span class="soon"><span class="badge soon">1–10</span> Tag Questions · Articles · Tenses · Active/Passive · Prepositions · Phrasal Verbs · Word Formation · Conjunctions · Quantifiers · Time Clauses <span class="lcount">sắp tới</span></span></li></ul></div>
+<div class="module"><div class="module-head"><span class="module-num">CHẶNG 2</span></div><h2>Ngữ pháp nâng cao và diễn đạt · khoảng 20–30 bài</h2><p class="module-why">Mở rộng câu và diễn đạt chính xác khi nền tảng đã ổn.</p><ul class="lessons-list"><li><span class="soon"><span class="badge soon">11–18</span> Participles · Gerunds/Infinitives · Relative Clauses · Comparatives · Fixed Phrases · Reported Speech · Modals · Inversion <span class="lcount">sắp tới</span></span></li></ul></div>
+<div class="module"><div class="module-head"><span class="module-num">CHẶNG 3</span></div><h2>Từ vựng và giao tiếp · khoảng 10–15 bài</h2><p class="module-why">Chuyển từ nhận biết nghĩa sang dùng từ và cụm từ tự nhiên trong tình huống thật.</p><ul class="lessons-list"><li><span class="soon"><span class="badge soon">19–21</span> Semantic Fields · Synonyms/Antonyms · Communication Situations <span class="lcount">sắp tới</span></span></li></ul></div>
+<div class="module"><div class="module-head"><span class="module-num">CHẶNG 4</span></div><h2>Tích hợp bốn kỹ năng · khoảng 20–30 buổi</h2><p class="module-why">Luyện đọc, nghe, nói, viết song song để kiến thức đi vào sử dụng.</p><ul class="lessons-list"><li><span class="soon"><span class="badge soon">4 kỹ năng</span> Reading · Listening · Speaking · Writing · ôn tập kết hợp <span class="lcount">sắp tới</span></span></li></ul></div>
+<div class="module"><div class="module-head"><span class="module-num">CHẶNG 5</span></div><h2>Chuyển tiếp sang IELTS</h2><p class="module-why">Đánh giá lại trình độ, chốt mục tiêu band và xây kế hoạch theo từng kỹ năng khi nền tảng đã đủ vững.</p><ul class="lessons-list"><li><span class="soon"><span class="badge soon">IELTS</span> Đánh giá đầu vào và lộ trình cá nhân <span class="lcount">sau này</span></span></li></ul></div>
+<p class="try-it" style="text-align:center;margin-top:40px">Lộ trình co giãn: nếu một phần còn khó, sẽ có bài luyện thêm. Có thể đổi mục tiêu hoặc thứ tự bất cứ lúc nào.<br><span class="tiny">Danh sách 21 chủ điểm hiện dựa trên nội dung còn truy cập được trong hội thoại; phụ lục gốc chưa có trong tệp dự án.</span></p></div>
+<script>
+(() => {
+  const STORAGE_KEY = 'ielts-foundation-progress-v1';
+  const TOTAL_LESSON_ESTIMATE = 100;
+  const LESSON_01_ID = 'lesson01-present-continuous';
+  const LESSON_02_ID = 'lesson02-present-simple';
+  const LESSON_03_ID = 'lesson03-present-simple-continuous';
+  const LESSON_04_ID = 'lesson04-noun-verb-adjective-adverb';
+  const LESSON_05_ID = 'lesson05-subject-verb-object-complement';
+  const LESSON_06_ID = 'lesson06-basic-sentence-in-context';
 
-        function readProgress() {
-          try {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-          } catch {
-            return {};
-          }
-        }
+  function readProgress() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
 
-        function unlockNextLessons(completedLessonIds) {
-          document
-            .querySelectorAll(".lessons-list .soon[data-href][data-requires]")
-            .forEach((lockedItem) => {
-              if (!completedLessonIds.includes(lockedItem.dataset.requires))
-                return;
+  function unlockNextLessons(completedLessonIds) {
+    document.querySelectorAll('.lessons-list .soon[data-href][data-requires]').forEach((lockedItem) => {
+      if (!completedLessonIds.includes(lockedItem.dataset.requires)) return;
 
-              const link = document.createElement("a");
-              link.href = lockedItem.dataset.href;
-              link.setAttribute(
-                "aria-label",
-                "Mở " + lockedItem.querySelector(".badge").textContent,
-              );
+      const link = document.createElement('a');
+      link.href = lockedItem.dataset.href;
+      link.setAttribute('aria-label', 'Mở ' + lockedItem.querySelector('.badge').textContent);
 
-              const badge = lockedItem.querySelector(".badge");
-              badge.classList.remove("soon");
-              badge.classList.add("now");
+      const badge = lockedItem.querySelector('.badge');
+      badge.classList.remove('soon');
+      badge.classList.add('now');
 
-              const label = lockedItem.querySelector(".lcount");
-              if (label) label.textContent = "Tiếp tục →";
+      const label = lockedItem.querySelector('.lcount');
+      if (label) label.textContent = 'Tiếp tục →';
 
-              while (lockedItem.firstChild)
-                link.appendChild(lockedItem.firstChild);
-              lockedItem.replaceWith(link);
-            });
-        }
+      while (lockedItem.firstChild) link.appendChild(lockedItem.firstChild);
+      lockedItem.replaceWith(link);
+    });
+  }
 
-        function renderProgress(progress, completedLessonIds) {
-          const count = completedLessonIds.length;
-          const percentage = Math.min(
-            100,
-            Math.round((count / TOTAL_LESSON_ESTIMATE) * 100),
-          );
-          const previousLesson = progress.lesson01 || {};
-          const status = document.getElementById("lesson-status");
-          const lessonOneLabel = document.getElementById("attempt-status");
+  function renderProgress(progress, completedLessonIds) {
+    const count = completedLessonIds.length;
+    const percentage = Math.min(100, Math.round((count / TOTAL_LESSON_ESTIMATE) * 100));
+    const previousLesson = progress.lesson01 || {};
+    const status = document.getElementById('lesson-status');
+    const lessonOneLabel = document.getElementById('attempt-status');
 
-          document.getElementById("progress").style.width = percentage + "%";
-          document.getElementById("progress-label").textContent =
-            count +
-            " / ~" +
-            TOTAL_LESSON_ESTIMATE +
-            " bài hoàn thành · tổng số bài là ước tính";
+    document.getElementById('progress').style.width = percentage + '%';
+    document.getElementById('progress-label').textContent =
+      count + ' / ~' + TOTAL_LESSON_ESTIMATE + ' bài hoàn thành · tổng số bài là ước tính';
 
-          if (completedLessonIds.includes(LESSON_01_ID)) {
-            lessonOneLabel.textContent = "Đã tự chấm đạt ✓";
-            status.textContent = completedLessonIds.includes(LESSON_04_ID)
-              ? "Bài 04 hoàn thành"
-              : completedLessonIds.includes(LESSON_03_ID)
-                ? "Bài 03 hoàn thành · Bài 04 đã mở"
-                : completedLessonIds.includes(LESSON_02_ID)
-                  ? "Bài 02 hoàn thành · Bài 03 đã mở"
-                  : "Bài 01 hoàn thành";
-            status.style.background = "rgba(74,222,128,.15)";
-            status.style.color = "var(--green)";
-          } else if (previousLesson.submitted) {
-            lessonOneLabel.textContent = "Đã tự chấm · cần làm lại";
-            status.textContent = "Bài 01 cần luyện tiếp";
-          }
-        }
+    if (completedLessonIds.includes(LESSON_01_ID)) {
+      lessonOneLabel.textContent = 'Đã tự chấm đạt ✓';
+      status.textContent = completedLessonIds.includes(LESSON_06_ID)
+        ? 'Bài 06 hoàn thành'
+        : completedLessonIds.includes(LESSON_05_ID)
+          ? 'Bài 05 hoàn thành · Bài 06 đã mở'
+          : completedLessonIds.includes(LESSON_04_ID)
+            ? 'Bài 04 hoàn thành · Bài 05 đã mở'
+            : completedLessonIds.includes(LESSON_03_ID)
+              ? 'Bài 03 hoàn thành · Bài 04 đã mở'
+              : completedLessonIds.includes(LESSON_02_ID)
+                ? 'Bài 02 hoàn thành · Bài 03 đã mở'
+                : 'Bài 01 hoàn thành';
+      status.style.background = 'rgba(74,222,128,.15)';
+      status.style.color = 'var(--green)';
+    } else if (previousLesson.submitted) {
+      lessonOneLabel.textContent = 'Đã tự chấm · cần làm lại';
+      status.textContent = 'Bài 01 cần luyện tiếp';
+    }
+  }
 
-        const progress = readProgress();
-        const completedLessonIds = [
-          ...new Set(progress.completedLessonIds || []),
-        ];
-        const previousLesson = progress.lesson01 || {};
+  const progress = readProgress();
+  const completedLessonIds = [...new Set(progress.completedLessonIds || [])];
+  const previousLesson = progress.lesson01 || {};
 
-        // Bổ sung ID cũ nếu bài trước đã được lưu hoàn thành theo cấu trúc tiến độ cũ.
-        if (
-          (previousLesson.completed || previousLesson.reviewedComplete) &&
-          !completedLessonIds.includes(LESSON_01_ID)
-        ) {
-          completedLessonIds.push(LESSON_01_ID);
-        }
+  // Bổ sung ID cũ nếu bài trước đã được lưu hoàn thành theo cấu trúc tiến độ cũ.
+  if ((previousLesson.completed || previousLesson.reviewedComplete) && !completedLessonIds.includes(LESSON_01_ID)) {
+    completedLessonIds.push(LESSON_01_ID);
+  }
 
-        progress.completedLessonIds = completedLessonIds;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  progress.completedLessonIds = completedLessonIds;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
 
-        unlockNextLessons(completedLessonIds);
-        renderProgress(progress, completedLessonIds);
-      })();
-    </script>
-  </body>
-</html>
+  unlockNextLessons(completedLessonIds);
+  renderProgress(progress, completedLessonIds);
+})();
+</script></body></html>
