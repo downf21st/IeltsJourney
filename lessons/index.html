@@ -154,7 +154,7 @@
         >
         <h1>Nền vững, nói tự tin hơn</h1>
         <p class="subtitle">
-          Học từ nền tảng đến IELTS, theo nhịp độ và bài làm thật của em.
+          Học từ nền tảng đến IELTS, theo nhịp độ và bài làm thật của vợ.
         </p>
       </div>
       <div class="intro-card">
@@ -211,9 +211,13 @@
             >
           </li>
           <li>
-            <span class="soon"
+            <span
+              class="soon"
+              data-href="0004-noun-verb-adjective-adverb.html"
+              data-requires="lesson03-present-simple-continuous"
               ><span class="badge soon">Bài 04</span> Từ loại: noun, verb,
-              adjective, adverb <span class="lcount">sắp tới</span></span
+              adjective, adverb
+              <span class="lcount">🔒 hoàn thành Bài 03 để mở</span></span
             >
           </li>
           <li>
@@ -335,6 +339,7 @@
         const LESSON_01_ID = "lesson01-present-continuous";
         const LESSON_02_ID = "lesson02-present-simple";
         const LESSON_03_ID = "lesson03-present-simple-continuous";
+        const LESSON_04_ID = "lesson04-noun-verb-adjective-adverb";
 
         function readProgress() {
           try {
@@ -390,11 +395,13 @@
 
           if (completedLessonIds.includes(LESSON_01_ID)) {
             lessonOneLabel.textContent = "Đã tự chấm đạt ✓";
-            status.textContent = completedLessonIds.includes(LESSON_03_ID)
-              ? "Bài 03 hoàn thành"
-              : completedLessonIds.includes(LESSON_02_ID)
-                ? "Bài 02 hoàn thành · Bài 03 đã mở"
-                : "Bài 01 hoàn thành";
+            status.textContent = completedLessonIds.includes(LESSON_04_ID)
+              ? "Bài 04 hoàn thành"
+              : completedLessonIds.includes(LESSON_03_ID)
+                ? "Bài 03 hoàn thành · Bài 04 đã mở"
+                : completedLessonIds.includes(LESSON_02_ID)
+                  ? "Bài 02 hoàn thành · Bài 03 đã mở"
+                  : "Bài 01 hoàn thành";
             status.style.background = "rgba(74,222,128,.15)";
             status.style.color = "var(--green)";
           } else if (previousLesson.submitted) {

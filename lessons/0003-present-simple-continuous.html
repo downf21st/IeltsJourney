@@ -44,10 +44,10 @@
         </header>
 
         <div class="callout bridge">
-          <div class="ct">🌉 Nối hai bài em đã học</div>
+          <div class="ct">🌉 Nối hai bài vợ đã học</div>
           <p>
-            Bài 01 giúp em nói <code>I am learning English now.</code> Bài 02
-            giúp em nói <code>I study English every evening.</code> Cả hai đều
+            Bài 01 giúp vợ nói <code>I am learning English now.</code> Bài 02
+            giúp vợ nói <code>I study English every evening.</code> Cả hai đều
             nói về hiện tại; khác nhau ở chỗ một câu kể việc đang diễn ra, câu
             kia kể thói quen.
           </p>
@@ -71,7 +71,7 @@
             </thead>
             <tbody>
               <tr>
-                <td>Thói quen của em</td>
+                <td>Thói quen của vợ</td>
                 <td>Present Simple</td>
                 <td>I + động từ gốc</td>
                 <td>I study English every evening.</td>
@@ -240,7 +240,7 @@ Nga <span class="kw">is</span> <span class="fn">studying</span> English now.</co
             <div class="feedback"></div>
 
             <div class="q">
-              Câu 4. Em đang học ngay lúc này. “I ___ English at the moment.”
+              Câu 4. Vợ đang học ngay lúc này. “I ___ English at the moment.”
             </div>
             <button
               class="opt"
@@ -340,7 +340,7 @@ Nga <span class="kw">is</span> <span class="fn">studying</span> English now.</co
         <section aria-labelledby="practice-title">
           <h2 id="practice-title">4. Bài thực hành · ba câu của vợ</h2>
           <p>
-            Viết ba câu thật về mình và gia đình. Chọn thì theo ý em muốn diễn
+            Viết ba câu thật về mình và gia đình. Chọn thì theo ý vợ muốn diễn
             đạt.
           </p>
           <ol>
@@ -535,7 +535,7 @@ Nga <span class="kw">is</span> <span class="fn">studying</span> English now.</co
         <nav class="navbar" aria-label="Điều hướng bài học">
           <a href="0002-present-simple.html">← Bài 02</a>
           <a href="index.html">🏠 Mục lục</a>
-          <span class="disabled">Sau →</span>
+          <span class="disabled" id="next-lesson-link">Sau →</span>
         </nav>
         <p class="try-it">
           💬 Nếu phần phân biệt hai thì còn lẫn, vợ cứ hỏi chồng rồi mình luyện
@@ -770,9 +770,20 @@ Nga <span class="kw">is</span> <span class="fn">studying</span> English now.</co
           element.className = "feedback show " + (passed ? "good" : "bad");
         }
 
+        function enableNextLink() {
+          const lockedLink = document.getElementById("next-lesson-link");
+          if (!lockedLink) return;
+          const link = document.createElement("a");
+          link.href = "0004-noun-verb-adjective-adverb.html";
+          link.textContent = "Sau →";
+          lockedLink.replaceWith(link);
+        }
+
         function initializeLesson() {
           const progress = loadProgress();
           if (!unlockLessonIfReady(progress)) return;
+          if ((progress.completedLessonIds || []).includes(CURRENT_LESSON_ID))
+            enableNextLink();
 
           const questions = getQuizQuestions();
           const savedLesson = progress.lesson03 || {};
@@ -913,6 +924,7 @@ Nga <span class="kw">is</span> <span class="fn">studying</span> English now.</co
                 submittedAt: new Date().toISOString(),
               };
               saveProgress(latestProgress);
+              if (passed) enableNextLink();
               document.getElementById("quiz-result").textContent =
                 "Kết quả: " + score + "/5.";
               setFeedback(

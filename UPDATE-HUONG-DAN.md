@@ -8,7 +8,7 @@ Hướng dẫn này giúp vợ thêm bài mà vẫn giữ nguyên các bài và 
 - **CẬP NHẬT**: chỉ sửa đúng tệp được nêu. Tạo bản sao trước khi sửa để có thể quay lại.
 - **GIỮ NGUYÊN**: không sửa tệp đó.
 
-Thầy sẽ luôn gửi danh sách này cùng mỗi bài mới.
+Chồng sẽ luôn gửi danh sách này cùng mỗi bài mới.
 
 ## 2. Thứ tự mở bài trong website
 
@@ -126,7 +126,7 @@ Ví dụ khi thêm Bài 03:
 ## 8. Cập nhật bằng File Explorer
 
 1. Tạo bản sao thư mục website trước khi sửa, ví dụ `ielts-backup`.
-2. Tải gói cập nhật thầy gửi và giải nén vào một thư mục tạm riêng.
+2. Tải gói cập nhật chồng gửi và giải nén vào một thư mục tạm riêng.
 3. Đọc bảng THÊM / CẬP NHẬT / GIỮ NGUYÊN đi kèm.
 4. Chép tệp **THÊM** vào đúng thư mục trong website.
 5. Với tệp **CẬP NHẬT**, chỉ chép đè đúng các tệp được nêu. Nếu muốn tự sửa tay, mở tệp trong editor và chỉ áp dụng các đoạn thay đổi được hướng dẫn.
@@ -139,6 +139,6 @@ Gói cập nhật nhỏ chỉ chứa tệp cần thêm hoặc sửa. `english-fo
 
 Sau khi cập nhật các tệp trên máy, cần triển khai phiên bản mới lên dịch vụ hosting để website online nhận thay đổi. Tiến độ vẫn riêng theo trình duyệt; muốn đồng bộ nhiều thiết bị hoặc nhiều người học thì cần đăng nhập và cơ sở dữ liệu.
 
-## Việc thầy gửi cùng mỗi bài mới
+## Việc chồng gửi cùng mỗi bài mới
 
-Thầy sẽ nêu rõ tệp nào **THÊM / CẬP NHẬT / GIỮ NGUYÊN**, chỉ ra đoạn cần sửa khi vợ muốn tự cập nhật bằng tay, và gửi gói source thay đổi nhỏ cùng bản đầy đủ dự phòng.
+Chồng sẽ nêu rõ tệp nào **THÊM / CẬP NHẬT / GIỮ NGUYÊN**, chỉ ra đoạn cần sửa khi vợ muốn tự cập nhật bằng tay, và gửi gói source thay đổi nhỏ cùng bản đầy đủ dự phòng.
