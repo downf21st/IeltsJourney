@@ -189,10 +189,7 @@
             >
           </li>
           <li>
-            <span class="soon"
-              ><span class="badge soon">Bài 02</span> Present Simple · thói quen
-              và sự thật <span class="lcount">sắp tới</span></span
-            >
+            <span class="soon" data-href="0002-present-simple.html" data-requires="lesson01-present-continuous"><span class="badge soon">Bài 02</span> Present Simple · thói quen và sự thật <span class="lcount">sắp tới</span></span>
           </li>
           <li>
             <span class="soon"
@@ -320,45 +317,76 @@
     </div>
     <script>
       (() => {
-        const key = "ielts-foundation-progress-v1",
-          target = 100,
-          lessonId = "lesson01-present-continuous";
-        let s = {};
-        try {
-          s = JSON.parse(localStorage.getItem(key) || "{}");
-        } catch {}
-        const a = s.lesson01 || {},
-          completed = s.completedLessonIds || [];
-        if (
-          (a.reviewedComplete || a.completed) &&
-          !completed.includes(lessonId)
-        )
-          completed.push(lessonId);
-        const count = completed.length,
-          pct = Math.min(100, Math.round((count / target) * 100)),
-          label = document.getElementById("attempt-status"),
-          pill = document.getElementById("lesson-status");
-        document.getElementById("progress").style.width = pct + "%";
-        document.getElementById("progress-label").textContent =
-          count + " / ~" + target + " bài hoàn thành · tổng số bài là ước tính";
-        if (completed.includes(lessonId)) {
-          label.textContent = "Đã tự chấm đạt ✓";
-          pill.textContent = "Bài 01 hoàn thành";
-          pill.style.background = "rgba(74,222,128,.15)";
-          pill.style.color = "var(--green)";
-        } else if (a.submitted) {
-          label.textContent = "Đã tự chấm · cần làm lại";
-          pill.textContent = "Bài 01 cần luyện tiếp";
-          document.getElementById("progress-label").textContent =
-            count +
-            " / ~" +
-            target +
-            " bài hoàn thành · Bài 01 chưa đạt tiêu chí";
+        const STORAGE_KEY = "ielts-foundation-progress-v1";
+        const TOTAL_LESSON_ESTIMATE = 100;
+        const LESSON_01_ID = "lesson01-present-continuous";
+        const LESSON_02_ID = "lesson02-present-simple";
+
+        function readProgress() {
+          try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+          } catch {
+            return {};
+          }
         }
-        localStorage.setItem(
-          key,
-          JSON.stringify({ ...s, completedLessonIds: completed }),
-        );
+
+        function unlockNextLessons(completedIds) {
+          document.querySelectorAll(".lessons-list .soon[data-href][data-requires]").forEach((lockedItem) => {
+            if (!completedIds.includes(lockedItem.dataset.requires)) return;
+
+            const link = document.createElement("a");
+            link.href = lockedItem.dataset.href;
+            link.setAttribute("aria-label", "Mở " + lockedItem.querySelector(".badge").textContent);
+
+            const badge = lockedItem.querySelector(".badge");
+            badge.classList.replace("soon", "now");
+
+            const label = lockedItem.querySelector(".lcount");
+            if (label) label.textContent = "Tiếp tục →";
+
+            while (lockedItem.firstChild) link.appendChild(lockedItem.firstChild);
+            lockedItem.replaceWith(link);
+          });
+        }
+
+        function updateProgress(progress, completedIds) {
+          const count = completedIds.length;
+          const percentage = Math.min(100, Math.round((count / TOTAL_LESSON_ESTIMATE) * 100));
+          const previousLesson = progress.lesson01 || {};
+          const status = document.getElementById("lesson-status");
+
+          document.getElementById("progress").style.width = percentage + "%";
+          document.getElementById("progress-label").textContent =
+            count + " / ~" + TOTAL_LESSON_ESTIMATE + " bài hoàn thành · tổng số bài là ước tính";
+
+          if (completedIds.includes(LESSON_01_ID)) {
+            document.getElementById("attempt-status").textContent = "Vợ đã tự chấm đạt ✓";
+            status.textContent = completedIds.includes(LESSON_02_ID)
+              ? "Bài 02 hoàn thành · chờ bài sau"
+              : "Bài 01 hoàn thành · vợ học tiếp nhé";
+            status.style.background = "rgba(74,222,128,.15)";
+            status.style.color = "var(--green)";
+          } else if (previousLesson.submitted) {
+            document.getElementById("attempt-status").textContent = "Đã tự chấm · cần làm lại";
+            status.textContent = "Bài 01 cần luyện tiếp";
+            document.getElementById("progress-label").textContent =
+              count + " / ~" + TOTAL_LESSON_ESTIMATE + " bài hoàn thành · Bài 01 chưa đạt tiêu chí";
+          }
+        }
+
+        const progress = readProgress();
+        const completedIds = [...new Set(progress.completedLessonIds || [])];
+        const previousLesson = progress.lesson01 || {};
+
+        // Bổ sung ID bài cũ nếu local storage đã lưu cờ completed trước đây.
+        if ((previousLesson.completed || previousLesson.reviewedComplete) && !completedIds.includes(LESSON_01_ID)) {
+          completedIds.push(LESSON_01_ID);
+        }
+
+        progress.completedLessonIds = completedIds;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        unlockNextLessons(completedIds);
+        updateProgress(progress, completedIds);
       })();
     </script>
   </body>
